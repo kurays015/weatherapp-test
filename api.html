@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API</title>
+    <style>
+     
+      .main-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f5f5f5;
+        font-family: Arial, sans-serif;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+label {
+  font-size: 20px;
+  color: #333;
+}
+
+input[type="text"] {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+.weather-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+
+li {
+  margin-bottom: 10px;
+  font-size: 18px;
+  list-style: none;
+  color: #333;
+}
+.icon {
+  border-radius: 16px;
+}
+
+
+    </style>
+  </head>
+  <body>
+    
+    <div class="main-container">
+
+      <form>
+        <label for="city">Location Weather</label>
+        <input type="text" name="city">
+      </form>
+  
+      <div class="weather-container">
+        <img src="Weather-Icons.jpg" class="icon" width="200px">
+      </div>
+      
+    </div>
+  
+    
+    <script>
+      
+      const form = document.querySelector('form');
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        //kung ano itype sa input
+        const city = form.city.value;
+
+        //after mag type magreset
+        form.reset();
+
+        //kung ano itype macoconnect sa data ng api
+        getWeatherandCity(city)
+      
+      })
+
+      const getWeatherandCity = async (city) => {
+
+        const key = '09b5f262144a058f65a9c1820bee5462'
+        const urlKey = `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}&appid=${key}`
+
+        try {
+
+          const response = await fetch( urlKey );
+          const data = await response.json();
+
+          console.log(data)
+          displayWeather(data)
+
+        } catch(error) {
+          console.log(error)
+        }
+      }
+
+      function displayWeather(data) {
+
+        const weatherContainer = document.querySelector('.weather-container');
+
+        let html = `
+          <li>City: ${data.name}</li>
+          <li>Temperature: ${data.main.temp}°C</li>
+          <li>Humidity: ${data.main.humidity}</li>
+          <li>Speed: ${data.wind.speed}</li>   
+        `;
+
+        weatherContainer.innerHTML = html;
+      }
+      // document.querySelector('.weather-temp').innerHTML = `${data.main.temp}`;
+      // document.querySelector('.city-name').innerHTML = `${data.name}`;
+      // document.querySelector('.wind').innerHTML = `${data.wind.speed}`;
+      // document.querySelector('.humidity').innerHTML = `${data.main.humidity}`;
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
